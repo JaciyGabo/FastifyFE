@@ -1,32 +1,54 @@
-# React + TypeScript + Vite
+# Fastify Frontend - Consola Operativa
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interfaz de usuario moderna, reactiva y segura construida con React 19, TypeScript, Vite y Tailwind CSS v4, conectada a la API backend Fastify v5 con persistencia MySQL.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🎨 Sistema de Diseño (Regla 60-30-10)
 
-## React Compiler
+La interfaz implementa estrictamente una paleta viva y audaz bajo la regla 60-30-10:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **60% Dominante / Canvas Base:** Fondos neutros y limpios (`#F8FAFC` en Light Mode / `#020617` en Dark Mode), tarjetas translúcidas de cristal con desenfoque de fondo (`backdrop-blur-xl`).
+- **30% Estructural / Identidad de Marca:**
+  - **Tropical Teal (`#62A8AC`):** Encabezados, bordes interactivos, barras de navegación, indicadores de estado de red.
+  - **Lemon Chiffon (`#F5F3BB`):** Resplandores ambientales y cápsulas de realce.
+- **10% Acento Energético:**
+  - **Petal Pink (`#DC6BAD`):** Botones de acción principal (CTA), anillos de enfoque, insignias de rol.
+  - **Light Bronze (`#DFA06E`):** Destacados de métricas, destellos y estados activos.
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 🛡️ Seguridad End-to-End
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- **Restricción de Rol en Registro:** Se eliminó la selección de roles del lado del cliente para evitar escalamiento de privilegios. Todos los registros asignan de forma predeterminada el rol seguro `user` desde el servidor.
+- **Autenticación JWT:** Tokens de acceso (JWT Bearer) en memoria de la aplicación y tokens de actualización (Refresh Tokens) transmitidos mediante cookies `httpOnly` seguras.
+- **Rotación de Sesiones:** El cliente API detecta errores 401 y rota la sesión automáticamente en segundo plano.
+
+---
+
+## 🌓 Modo Oscuro / Claro
+
+- Soporte nativo para modo oscuro persistido en `localStorage` con autodetección de preferencia de sistema (`prefers-color-scheme`).
+- Componente `ThemeToggle` con animaciones fluidas disponible en barra de navegación y vistas de autenticación.
+
+---
+
+## 📱 Responsividad y Navegación
+
+- Barra de navegación fluida que adapta sus controles dinámicamente.
+- Menú hamburguesa colapsable en pantallas pequeñas (`< 768px`) para evitar compresión de elementos visuales.
+
+---
+
+## 🚀 Comandos
+
+```bash
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Compilar para producción (TypeScript + Vite)
+npm run build
+
+# Ejecutar linter
+npm run lint
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
