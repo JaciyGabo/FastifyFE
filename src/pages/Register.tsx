@@ -3,13 +3,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, Mail, Lock, ShieldCheck, AlertCircle } from 'lucide-react';
+import { UserPlus, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const registerSchema = z.object({
   email: z.string().email('Ingresa un correo electrónico válido'),
   password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
-  role: z.enum(['user', 'admin']),
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -25,9 +24,6 @@ export function Register() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      role: 'user',
-    },
   });
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -90,23 +86,6 @@ export function Register() {
               />
             </div>
             {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
-              Rol de Usuario
-            </label>
-            <div className="relative">
-              <ShieldCheck className="pointer-events-none absolute left-3 top-3 h-5 w-5 text-slate-400" />
-              <select
-                {...register('role')}
-                className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20"
-              >
-                <option value="user">Usuario Estándar (user)</option>
-                <option value="admin">Administrador (admin)</option>
-              </select>
-            </div>
-            {errors.role && <p className="mt-1 text-xs text-red-600">{errors.role.message}</p>}
           </div>
 
           <button
