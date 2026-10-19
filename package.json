@@ -7,13 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "api:types": "openapi-typescript http://127.0.0.1:3000/docs/json -o src/types/api.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",
     "@tanstack/react-query": "^5.104.4",
-    "lucide-react": "^1.59.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.90.0",
@@ -26,7 +24,6 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
-    "openapi-typescript": "^7.13.0",
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
