@@ -42,7 +42,7 @@ class ApiClient {
 
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       ...(options.headers as Record<string, string>),
     };
 
@@ -118,7 +118,7 @@ class ApiClient {
   async refreshToken(): Promise<AuthResponse> {
     return fetch('/auth/refresh', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+
       credentials: 'include',
     }).then(async (res) => {
       if (!res.ok) {
