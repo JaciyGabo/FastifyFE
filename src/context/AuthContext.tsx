@@ -1,11 +1,16 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { api, type ApiUser } from '../api/client';
 
+interface Credentials {
+  email: string;
+  password: string;
+}
+
 interface AuthContextType {
   user: ApiUser | null;
   isLoading: boolean;
-  login: (data: { email: string; password: string }) => Promise<void>;
-  register: (data: { email: string; password: string }) => Promise<void>;
+  login: (data: Credentials) => Promise<void>;
+  register: (data: Credentials) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -16,35 +21,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Attempt silent session restore on app load
+    // Si la sesión caduca mientras se usa la app, volvemos al login.
+    api.onSessionExpired = () => setUser(null);
+
+    // Restaura la sesión al cargar la página usando la cookie de refresh.
     api
       .refreshToken()
       .then((res) => {
         api.setAccessToken(res.accessToken);
         setUser(res.user);
       })
-      .catch(() => {
-        // No active session or expired
-        setUser(null);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
+
+    return () => {
+      api.onSessionExpired = null;
+    };
   }, []);
 
-  const login = async (data: { email: string; password: string }) => {
+  const login = async (data: Credentials) => {
     const res = await api.login(data);
     setUser(res.user);
   };
 
-  const register = async (data: { email: string; password: string }) => {
+  const register = async (data: Credentials) => {
     const res = await api.register(data);
     setUser(res.user);
   };
 
   const logout = async () => {
-    await api.logout();
-    setUser(null);
+    try {
+      await api.logout();
+    } catch {
+      // Si el servidor no responde, igualmente cerramos la sesión local.
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
